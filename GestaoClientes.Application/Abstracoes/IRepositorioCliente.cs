@@ -13,4 +13,6 @@ public interface IRepositorioCliente
     Task AdicionarAsync(Cliente cliente, CancellationToken ct);
     Task<Cliente?> ObterPorIdAsync(Guid id, CancellationToken ct);
     Task<bool> ExisteCnpjAsync(Cnpj cnpj, CancellationToken ct);
+    Task AtualizarAsync(Cliente cliente, CancellationToken ct);
+    Task<IReadOnlyList<Cliente>> ListarAsync(int pagina, int tamanhoPagina, bool? ativo, string? nome, CancellationToken ct);
 }

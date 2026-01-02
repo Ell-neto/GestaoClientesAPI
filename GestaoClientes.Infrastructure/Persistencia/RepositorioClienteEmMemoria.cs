@@ -37,4 +37,29 @@ public class RepositorioClienteEmMemoria : IRepositorioCliente
 
     public Task<bool> ExisteCnpjAsync(Cnpj cnpj, CancellationToken ct)
         => Task.FromResult(_porCnpj.ContainsKey(cnpj.Valor));
+
+    public Task AtualizarAsync(Cliente cliente, CancellationToken ct)
+    {
+        _porId[cliente.Id] = cliente;
+        return Task.CompletedTask;
+    }
+    public Task<IReadOnlyList<Cliente>> ListarAsync(int pagina, int tamanhoPagina, bool? ativo, string? nome, CancellationToken ct)
+    {
+        var consulta = _porId.Values.AsEnumerable();
+
+        if (ativo.HasValue)
+            consulta = consulta.Where(c => c.Ativo == ativo.Value);
+
+        if (!string.IsNullOrWhiteSpace(nome))
+            consulta = consulta.Where(c => c.NomeFantasia.Contains(nome.Trim(), StringComparison.OrdinalIgnoreCase));
+
+        var resultado = consulta
+            .OrderBy(c => c.NomeFantasia)
+            .Skip((pagina - 1) * tamanhoPagina)
+            .Take(tamanhoPagina)
+            .ToList();
+
+        return Task.FromResult((IReadOnlyList<Cliente>)resultado);
+    }
+
 }

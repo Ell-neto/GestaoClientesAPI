@@ -15,6 +15,9 @@ public static class InjecaoDependencia
     {
         services.AddScoped<CriarClienteCommandHandler>();
         services.AddScoped<ObterClientePorIdQueryHandler>();
+        services.AddScoped<AtualizarClienteCommandHandler>();
+        services.AddScoped<ListarClientesQueryHandler>();
+        services.AddScoped<DesativarClienteCommandHandler>();
         return services;
     }
 }
