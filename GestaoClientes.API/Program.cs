@@ -1,41 +1,47 @@
+using GestaoClientes.Application.Clientes.Comandos;
+using GestaoClientes.Application.Clientes.Consultas;
+using GestaoClientes.Application.Configuracao;
+using GestaoClientes.Infrastructure.Configuracao;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+builder.Services
+    .AdicionarAplicacao()
+    .AdicionarInfraestrutura();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
-
-var summaries = new[]
+app.MapPost("/clientes", async (
+    CriarClienteRequest request,
+    CriarClienteCommandHandler handler,
+    CancellationToken ct) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    var resultado = await handler.ExecutarAsync(
+        new CriarClienteCommand(request.NomeFantasia, request.Cnpj),
+        ct);
 
-app.MapGet("/weatherforecast", () =>
+    if (!resultado.Sucesso)
+        return Results.BadRequest(new { erros = resultado.Erros });
+
+    var id = resultado.Valor!;
+    return Results.Created($"/clientes/{id}", new { id });
+});
+
+app.MapGet("/clientes/{id:guid}", async (
+    Guid id,
+    ObterClientePorIdQueryHandler handler,
+    CancellationToken ct) =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+    var dto = await handler.ExecutarAsync(new ObterClientePorIdQuery(id), ct);
+    return dto is null ? Results.NotFound() : Results.Ok(dto);
+});
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+public record CriarClienteRequest(string NomeFantasia, string Cnpj);
