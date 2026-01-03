@@ -13,12 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestaoClientes.API", "Gesta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestaoClientes.Tests", "GestaoClientes.Tests\GestaoClientes.Tests.csproj", "{D7EF2FE2-E993-4CEC-A11C-19AF2DBCC115}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ImgsAPI", "ImgsAPI", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\..\Pictures\ImgsProj\img01-Ini.png = ..\..\..\Pictures\ImgsProj\img01-Ini.png
-		..\..\..\Pictures\ImgsProj\img02test-Ini.png = ..\..\..\Pictures\ImgsProj\img02test-Ini.png
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
