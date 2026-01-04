@@ -129,7 +129,7 @@ Acrescentei também os métodos HTTP:
 ✅ **Atualizar um Cliente** (`PUT /clientes/{id}`)  
 ✅ **Deletar um Cliente** (`DELETE /clientes/{id}`)  
 ✅ **Consultar os Clientes** (`GET /clientes`) 
-OBS: Os parâmetros do GET /clientes consite em Páginação (não seria bom em um futuro ter problemas com a memória), tamanho Página, se está ativo ou não e o nome, sendo opcionais mas de uso sempre bom se possível.
+OBS: Os parâmetros do GET /clientes consite em Páginação (não seria bom em um futuro ter problemas com o processamento da consulta), tamanho Página, se está ativo ou não e o nome, sendo os dois últimos opcionais mas de uso sempre bom se possível.
 
 ## No CQRS (Comandos e Consultas) ainda mantemos a lógica:
 
@@ -138,7 +138,7 @@ OBS: Os parâmetros do GET /clientes consite em Páginação (não seria bom em 
   - `DeletarClienteCommand`
 
 - 🔎 **Query**: apenas consulta, acrescentando:
-  - `ObterClientes`
+  - `ListarClientes`
  
 
 Na imagem abaixo, podemos ver a API com todos os métodos via Swagger:
@@ -148,3 +148,4 @@ E no terminal, o retorno após o teste do código completo, acrescentando també
 ![Teste1](ImgsAPI/img04-extra2.png)
 
 ---
+
